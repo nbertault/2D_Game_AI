@@ -74,3 +74,43 @@ then blit it once to the visible canvas with an integer scale factor and
 ## Scope (v1)
 Single ~2-minute level, 3 lives, timer, score, title/pause/death/victory/
 game-over screens. No audio, no power-ups, no Koopas, no mobile/touch input.
+
+## Git workflow
+Branch roles:
+- `main` — released, playable versions only. Every commit here belongs to a tag.
+- `dev` — integration branch. Every change lands here before `main`.
+- `<type>/<slug>` — one branch per change, always cut from an up-to-date `dev`.
+  Types: `feat`, `fix`, `chore`, `docs`.
+
+Every change follows the same path:
+1. `git checkout dev && git pull`
+2. `git checkout -b feat/short-slug`
+3. commit in small steps with an imperative subject line
+4. `git push -u origin feat/short-slug`
+5. `gh pr create --base dev --fill`, then merge the pull request
+6. delete the feature branch
+
+Releases: once a milestone's scope is done, verify the game in the browser, open
+a pull request `dev` -> `main`, merge it, then
+`gh release create vX.Y --target main`. `dev` is reset onto `main` afterwards.
+
+Rules:
+- Never commit directly to `main` or `dev`; they only move through merges.
+- `main` must stay playable at all times.
+- One branch, one concern. A change that needs two branches is two changes.
+- Every release gets a milestone, one issue describing its scope, a tag and a
+  GitHub release.
+
+## Milestones
+- `v1.0` — first playable version, shipped.
+- Open the next milestone on GitHub before starting work on it, so every branch
+  maps to a milestone.
+
+## Tooling
+- GitHub CLI lives at `C:\Program Files\GitHub CLI\gh.exe`. A shell started
+  before the install will not have it on `PATH`.
+- Git authenticates through gh (`gh auth setup-git`). If a push hangs, the
+  credential helper is misconfigured — `git config --global` must route
+  `https://github.com` to `gh auth git-credential`, not to Git Credential Manager.
+- Run git/gh with `GIT_TERMINAL_PROMPT=0` so a bad credential fails fast instead
+  of waiting on an invisible prompt.
