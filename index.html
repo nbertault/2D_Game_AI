@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pixel Plumber</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="shell">
+    <canvas id="game" width="960" height="576"></canvas>
+    <p class="controls">
+      <span><b>&larr; &rarr;</b> / <b>A D</b> move</span>
+      <span><b>SPACE</b> / <b>Z</b> jump</span>
+      <span><b>P</b> pause</span>
+      <span><b>R</b> restart</span>
+    </p>
+  </main>
+
+  <!-- Classic scripts in dependency order: no modules, works from file:// -->
+  <script src="js/config.js"></script>
+  <script src="js/sprites.js"></script>
+  <script src="js/font.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/level.js"></script>
+  <script src="js/entities.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/camera.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

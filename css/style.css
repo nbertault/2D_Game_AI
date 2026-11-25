@@ -1,0 +1,53 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #101018;
+  background-image: radial-gradient(circle at 50% 0%, #22223a 0%, #101018 70%);
+  color: #b8b8c8;
+  font-family: ui-monospace, "Cascadia Mono", "Consolas", monospace;
+  overflow: hidden;
+}
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+canvas {
+  display: block;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  border: 2px solid #2c2c40;
+  border-radius: 3px;
+  box-shadow: 0 0 0 4px #17171f, 0 18px 48px rgba(0, 0, 0, 0.55);
+  background: #5c94fc;
+}
+
+.controls {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.controls b {
+  color: #fcd858;
+  font-weight: 600;
+}
