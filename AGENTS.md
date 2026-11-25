@@ -114,3 +114,8 @@ Rules:
   `https://github.com` to `gh auth git-credential`, not to Git Credential Manager.
 - Run git/gh with `GIT_TERMINAL_PROMPT=0` so a bad credential fails fast instead
   of waiting on an invisible prompt.
+- The git work above is automated by four global OpenCode skills in
+  `~/.config/opencode/skills`: `git-bootstrap`, `git-feature`, `git-milestone`,
+  `git-release`. Run their `.cmd` launchers instead of typing the commands by
+  hand. Script execution is disabled on this machine, so the `.ps1` files must
+  be started through the launcher.
