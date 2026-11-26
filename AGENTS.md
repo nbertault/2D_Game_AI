@@ -124,8 +124,26 @@ Rules:
 - Every release gets a milestone, one issue describing its scope, a tag and a
   GitHub release.
 
+## Agents
+
+The roster lives in `.opencode/agents/`. Select a primary role from the agent
+picker; Build launches the subagents.
+
+| Agent | Mode | Use it for |
+|-------|------|------------|
+| `planner` | primary | Turning an issue into a plan before branching |
+| `playtester` | primary | Browser verification after implementing |
+| `reviewer` | primary | Diff review before commit |
+| `docs-scribe` | subagent | README, AGENTS and CHANGELOG updates |
+| `physics-tuner` | subagent | Game-feel tuning through `js/config.js` |
+
+`docs/WORKFLOW.md` defines the pipeline, the Definition of Ready/Done and the
+release checklist. The mechanical push gate is in `.opencode/opencode.jsonc`.
+
 ## Milestones
 - `v1.0` — first playable version, shipped.
+- `v1.1` — agent team and workflow: roster, push gate, protected branches,
+  workflow docs and templates (in progress).
 - Open the next milestone on GitHub before starting work on it, so every branch
   maps to a milestone.
 
