@@ -86,23 +86,64 @@ Every change follows the same path:
 1. `git checkout dev && git pull`
 2. `git checkout -b feat/short-slug`
 3. commit in small steps with an imperative subject line
-4. `git push -u origin feat/short-slug`
-5. `gh pr create --base dev --fill`, then merge the pull request
-6. delete the feature branch
+4. commit locally; push only after approval
+5. after approval: `git push -u origin feat/short-slug`,
+   `gh pr create --base dev --fill`
+6. after approval: merge the pull request, then delete the feature branch
 
-Releases: once a milestone's scope is done, verify the game in the browser, open
-a pull request `dev` -> `main`, merge it, then
-`gh release create vX.Y --target main`. `dev` is reset onto `main` afterwards.
+Releases: once a milestone's scope is done, verify the game in the browser,
+close the milestone, then open a pull request `dev` -> `main` and show
+`git log --oneline main..dev` plus `git diff --stat main...dev`. Merge only
+after approval. Tag and publish only after a second approval:
+`gh release create vX.Y --target main`. Afterwards resync `dev` from `main`
+through a pull request (`main` -> `dev`); `dev` is protected, so it cannot be
+force-reset.
+
+### Push approval gate
+This project is under manual push control: commits stay local until the user
+approves them, and nothing reaches `origin` on its own.
+
+- Never run `git push`, `gh pr merge`, `gh release create`, or anything else
+  that writes to `origin` without explicit approval for that exact action.
+- Commit locally, then report: branch, commit hash(es), files touched, and the
+  exact command you intend to run. Wait for a clear go-ahead.
+- Approval is per push. A new commit or a new branch needs a new approval.
+- The `git-*` skills stop at this gate: run `git-feature` up to the local
+  commit, and `git-release` up to just before the `dev` -> `main` merge. Skip
+  their automatic push/merge steps here and run them only after approval.
+- `dev` -> `main` is a release action. Before asking, show
+  `git log --oneline main..dev` and `git diff --stat main...dev`, verify the
+  game in the browser, and confirm the milestone is closed.
 
 Rules:
 - Never commit directly to `main` or `dev`; they only move through merges.
 - `main` must stay playable at all times.
+- `main` and `dev` are protected on GitHub: both only move through pull
+  requests, with no force pushes and no deletions.
 - One branch, one concern. A change that needs two branches is two changes.
 - Every release gets a milestone, one issue describing its scope, a tag and a
   GitHub release.
 
+## Agents
+
+The roster lives in `.opencode/agents/`. Select a primary role from the agent
+picker; Build launches the subagents.
+
+| Agent | Mode | Use it for |
+|-------|------|------------|
+| `planner` | primary | Turning an issue into a plan before branching |
+| `playtester` | primary | Browser verification after implementing |
+| `reviewer` | primary | Diff review before commit |
+| `docs-scribe` | subagent | README, AGENTS and CHANGELOG updates |
+| `physics-tuner` | subagent | Game-feel tuning through `js/config.js` |
+
+`docs/WORKFLOW.md` defines the pipeline, the Definition of Ready/Done and the
+release checklist. The mechanical push gate is in `.opencode/opencode.jsonc`.
+
 ## Milestones
 - `v1.0` — first playable version, shipped.
+- `v1.1` — agent team and workflow: roster, push gate, protected branches,
+  workflow docs and templates (in progress).
 - Open the next milestone on GitHub before starting work on it, so every branch
   maps to a milestone.
 
@@ -114,3 +155,8 @@ Rules:
   `https://github.com` to `gh auth git-credential`, not to Git Credential Manager.
 - Run git/gh with `GIT_TERMINAL_PROMPT=0` so a bad credential fails fast instead
   of waiting on an invisible prompt.
+- The git work above is automated by four global OpenCode skills in
+  `~/.config/opencode/skills`: `git-bootstrap`, `git-feature`, `git-milestone`,
+  `git-release`. Run their `.cmd` launchers instead of typing the commands by
+  hand. Script execution is disabled on this machine, so the `.ps1` files must
+  be started through the launcher.
